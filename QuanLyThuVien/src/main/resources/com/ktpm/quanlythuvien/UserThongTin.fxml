@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="457.0" prefWidth="600.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label alignment="CENTER" prefHeight="35.0" prefWidth="606.0" text="THÔNG TIN USER">
@@ -89,9 +88,10 @@
             <TextField prefWidth="190.0" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="57.0" prefWidth="600.0">
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="378.0" prefHeight="57.0" prefWidth="600.0" spacing="20.0">
          <children>
             <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Lưu thông tin" textAlignment="CENTER" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="266.0" layoutY="26.0" mnemonicParsing="false" text="Đổi password" textAlignment="CENTER" />
          </children>
       </HBox>
    </children>
