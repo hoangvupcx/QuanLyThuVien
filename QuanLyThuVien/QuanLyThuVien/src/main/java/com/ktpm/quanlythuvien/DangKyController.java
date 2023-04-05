@@ -9,6 +9,7 @@ import com.ktpm.pojo.DoiTuong;
 import com.ktpm.pojo.User;
 import com.ktpm.services.BoPhanService;
 import com.ktpm.services.DoiTuongService;
+import com.ktpm.services.PasswordService;
 import com.ktpm.services.UserService;
 import com.ktpm.utils.MessageBox;
 import java.io.IOException;
@@ -32,6 +33,7 @@ import static javafx.scene.control.ButtonType.OK;
 import static javafx.scene.control.ButtonType.YES;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -46,9 +48,9 @@ public class DangKyController implements Initializable {
     @FXML
     private TextField username;
     @FXML
-    private TextField password;
+    private PasswordField password;
     @FXML
-    private TextField cfpassword;
+    private PasswordField cfpassword;
     @FXML
     private TextField email;
     @FXML
@@ -104,7 +106,7 @@ public class DangKyController implements Initializable {
     }
 
     public void addUsers(ActionEvent evt) throws SQLException, IOException, NoSuchAlgorithmException {
-
+        PasswordService p = new PasswordService();
         Date date = Date.valueOf(this.ngaysinh.getValue());
         UserService user = new UserService();
         if (this.username.getText().isEmpty() || this.password.getText().isEmpty() || this.cfpassword.getText().isEmpty() || this.email.getText().isEmpty()) {
@@ -112,7 +114,7 @@ public class DangKyController implements Initializable {
         } else {
             if (this.cfpassword.getText().trim().equals(this.password.getText().trim())) 
             {
-                if(6<=this.password.getText().length() && this.password.getText().length() <=45 )
+                if(p.check(this.password.getText().trim()))
                 {
                     User u = new User(this.username.getText().trim(), this.password.getText().trim(), this.name.getText(), group1.getSelectedToggle().getUserData().toString(), date, this.email.getText(), this.diachi.getText(), this.sdt.getText(), this.cbBoPhan.getSelectionModel().getSelectedItem().getMaBP(), this.cbDoituong.getSelectionModel().getSelectedItem().getMaDT());
                     try {
@@ -129,7 +131,7 @@ public class DangKyController implements Initializable {
                 }
                 else
                 {
-                    MessageBox.getBox("Thông báo", "Mật khẩu không được ít hơn 6 kí tự và nhiều hơn 45", Alert.AlertType.INFORMATION).show();
+                    MessageBox.getBox("Thông báo", "Mật khẩu không được ít hơn 6 kí tự và nhiều hơn 45 và phải có chữ hoa, chữ thường và kí tự", Alert.AlertType.INFORMATION).show();
                 }
             } else {
                 MessageBox.getBox("Thông báo", "Mật khẩu không khớp", Alert.AlertType.INFORMATION).show();

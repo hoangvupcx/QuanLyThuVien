@@ -14,16 +14,13 @@ public class ChiTietPM {
     private int id;
     private int id_sach;
     private int id_pm;
-    private Date hanTra;
-    private int soLuong;
 
     
-    public ChiTietPM(int id_sach,int id_pm, Date hanTra, int soLuong)
+    public ChiTietPM(int id_sach,int id_pm)
     {
         this.id_sach=id_sach;
         this.id_pm=id_pm;
-        this.hanTra=hanTra;
-        this.soLuong=soLuong;
+ 
     }
     /**
      * @return the id
@@ -67,31 +64,4 @@ public class ChiTietPM {
         this.id_pm = id_pm;
     }
 
-    /**
-     * @return the hanTra
-     */
-    public Date getHanTra() {
-        return hanTra;
-    }
-
-    /**
-     * @param hanTra the hanTra to set
-     */
-    public void setHanTra(Date hanTra) {
-        this.hanTra = hanTra;
-    }
-
-    /**
-     * @return the soLuong
-     */
-    public int getSoLuong() {
-        return soLuong;
-    }
-
-    /**
-     * @param soLuong the soLuong to set
-     */
-    public void setSoLuong(int soLuong) {
-        this.soLuong = soLuong;
-    }
 }

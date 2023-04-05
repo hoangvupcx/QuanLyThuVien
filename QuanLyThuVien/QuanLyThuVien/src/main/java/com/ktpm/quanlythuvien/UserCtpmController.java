@@ -4,15 +4,16 @@
  */
 package com.ktpm.quanlythuvien;
 
+import com.ktpm.pojo.ChiTietPM;
+import com.ktpm.pojo.PhieuMuonSach;
 import com.ktpm.pojo.Sach;
 import com.ktpm.pojo.TheLoaiSach;
 import com.ktpm.pojo.User;
 import com.ktpm.pojo.data;
-import static com.ktpm.quanlythuvien.QuanLySachController.s;
+import com.ktpm.services.ChiTietPmService;
 import com.ktpm.services.PhieuMuonService;
 import com.ktpm.services.SachService;
 import com.ktpm.services.TheLoaiService;
-import com.ktpm.services.UserService;
 import com.ktpm.utils.MessageBox;
 import java.io.IOException;
 import java.net.URL;
@@ -21,8 +22,6 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +34,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -46,15 +46,14 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Admin
+ * @author THANH NHAN
  */
-public class UserMuonSachController implements Initializable {
+public class UserCtpmController implements Initializable {
 
-    static UserService user = new UserService();
+    private User us;
     static SachService s = new SachService();
     static PhieuMuonService pm = new PhieuMuonService();
-    static data d = new data();
-    private User us;
+    static ChiTietPmService ct = new ChiTietPmService();
 
     @FXML
     TableView<Sach> tbSach;
@@ -75,8 +74,6 @@ public class UserMuonSachController implements Initializable {
     @FXML
     private DatePicker ngayNhap;
 
-    @FXML
-    private TextField search;
 
     public void setUser(User u) {
         this.us = u;
@@ -86,18 +83,11 @@ public class UserMuonSachController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             loadTL();
-            this.loadTableColumns();
-            this.loadTableData(null);
+            loadTableColumns();
+            loadTableData();
         } catch (SQLException ex) {
-            Logger.getLogger(UserMuonSachController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserCtpmController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.search.textProperty().addListener(e -> {
-            try {
-                this.loadTableData(this.search.getText());
-            } catch (SQLException ex) {
-                Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
     }
 
     private void loadTableColumns() {
@@ -129,14 +119,16 @@ public class UserMuonSachController implements Initializable {
         colCate.setCellValueFactory(new PropertyValueFactory("sach_tl"));
         colCate.setPrefWidth(100);
 
-        this.tbSach.getColumns().addAll(colID, colName, colAuthor, colExport, colDescription, colPosition, colExport1, colCate);
+        TableColumn colSta = new TableColumn("Trạng thái");
+        colSta.setCellValueFactory(new PropertyValueFactory("trangthai"));
+        colSta.setPrefWidth(100);
+
+        this.tbSach.getColumns().addAll(colID, colName, colAuthor, colExport, colDescription, colPosition, colExport1, colCate, colSta);
     }
 
-    private void loadTableData(String kw) throws SQLException {
-        List<Sach> sa = s.getSachs(kw);
-        this.tbSach.getItems().clear();
-        this.tbSach.setItems(FXCollections.observableList(sa));
+    private void loadTableData() {
 
+        this.tbSach.setItems(FXCollections.observableList(data.sa));
     }
 
     public void loadTL() throws SQLException {
@@ -158,67 +150,62 @@ public class UserMuonSachController implements Initializable {
         this.ngayNhap.setValue(date1);
     }
 
-    public void themVaoPM(ActionEvent evt) throws SQLException {
-        long t = System.currentTimeMillis();
-        long t1 = us.getHanthe().getTime();
-        if (t1 - t >= 0) {
-            if (pm.kiemTraMuon(us.getId())) {
-                Sach sac = new Sach(Integer.parseInt(this.maSach.getText()),
-                        this.tenSach.getText(),
-                        this.tacGia.getText(),
-                        Date.valueOf(this.namXB.getValue()),
-                        this.moTa.getText(),
-                        this.viTri.getText(),
-                        Date.valueOf(this.ngayNhap.getValue()),
-                        this.cbTheLoaiSach.getSelectionModel().getSelectedItem().getMaTLS(),
-                        "Chưa đặt");
-                if (d.kts(sac)) {
-                    if (data.sa.size() < 5) {
-                        if (data.sa.add(sac)) {
-                            MessageBox.getBox("Thông báo", "Bạn đã thêm sách thành công!!!", Alert.AlertType.INFORMATION).show();
-                        } else {
-                            MessageBox.getBox("Thông báo", "không thành công!!!", Alert.AlertType.ERROR).show();
-                        }
-                    } else {
-                        MessageBox.getBox("Thông báo", "Sách mượn đã đạt tối đa", Alert.AlertType.ERROR).show();
-                    }
-
+    public void delete(ActionEvent evt) throws SQLException {
+        Sach sa = tbSach.getSelectionModel().getSelectedItem();
+        Alert a = MessageBox.getBox("Question",
+                "Are you sure to delete this question?",
+                Alert.AlertType.CONFIRMATION);
+        a.showAndWait().ifPresent(res -> {
+            if (res == ButtonType.OK) {
+                if (data.sa.remove(sa)) {
+                    MessageBox.getBox("Question", "Delete successful", Alert.AlertType.INFORMATION).show();
+                    this.loadTableData();
                 } else {
-                    MessageBox.getBox("Thông báo", "Sách này đã được thêm!!!", Alert.AlertType.ERROR).show();
+                    MessageBox.getBox("Question", "Delete failed", Alert.AlertType.WARNING).show();
+                }
+            }
+        });
+    }
 
+    public void datMuon(ActionEvent evt) throws SQLException {
+        Date date = Date.valueOf(LocalDate.now());
+        LocalDate localDate = LocalDate.now();
+        int nam = localDate.getYear();
+        int thang = localDate.getMonthValue();
+        int ngay = localDate.getDayOfMonth();
+        
+       
+        LocalDate futureDate = LocalDate.now().plusMonths(1);
+        Date date1=Date.valueOf(futureDate);
+        PhieuMuonSach pms = new PhieuMuonSach(date, date1, us.getId(), data.sa.size(), "Chờ lấy sách");
+        if (pm.addPhieuMuon(pms)) {
+            PhieuMuonSach phieu = pm.getPM(nam, thang, ngay, us.getId());
+            for (int i = 0; i < data.sa.size(); i++) {
+                ChiTietPM ctpm = new ChiTietPM(data.sa.get(i).getMaSach(), phieu.getId());
+                if (ct.addChiTiet(ctpm)) {
+                    s.updateTT(data.sa.get(i).getMaSach());
+                } else {
+                    MessageBox.getBox("Thông báo", "đặt không thành công", Alert.AlertType.WARNING).show();
                 }
 
-            } else {
-                MessageBox.getBox("Thông báo", "Bạn phải trả sách mới tiếp tục đặt!!!", Alert.AlertType.ERROR).show();
             }
-
+            data.sa.clear();
+            loadTableData();
+            MessageBox.getBox("Thông báo", "Đặt thành công!!Bạn hãy lấy sách trong vòng 48h", Alert.AlertType.INFORMATION).show();
         } else {
-            MessageBox.getBox("Thông báo", "Thẻ bạn đã hết hạn!!!", Alert.AlertType.INFORMATION).show();
+            MessageBox.getBox("Thông báo", "Đặt không thành công", Alert.AlertType.WARNING).show();
         }
 
     }
 
-    public void chiTietPM(ActionEvent evt) throws IOException, SQLException {
+    public void Thoat(ActionEvent evt) throws IOException, SQLException {
         Stage stage = (Stage) ((Node) evt.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("UserCTPM.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("UserMuonSach.fxml"));
         Parent manageView = loader.load();
         Scene scene = new Scene(manageView);
-        UserCtpmController controller = loader.getController();
+        UserMuonSachController controller = loader.getController();
         controller.setUser(us);
         stage.setScene(scene);
         stage.show();
     }
-
-    public void thoat(ActionEvent evt) throws IOException, SQLException {
-        User ur = user.getU(this.us.getUsername(), this.us.getPassword());
-        Stage stage = (Stage) ((Node) evt.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("User.fxml"));
-        Parent manageView = loader.load();
-        Scene scene = new Scene(manageView);
-        UserController controller = loader.getController();
-        controller.thongTin(ur);
-        stage.setScene(scene);
-        stage.show();
-    }
-
 }

@@ -7,21 +7,16 @@ package com.ktpm.quanlythuvien;
 import com.ktpm.pojo.Sach;
 import com.ktpm.pojo.TheLoaiSach;
 import com.ktpm.pojo.User;
-import com.ktpm.pojo.data;
-import static com.ktpm.quanlythuvien.QuanLySachController.s;
-import com.ktpm.services.PhieuMuonService;
-import com.ktpm.services.SachService;
+import com.ktpm.pojo.data2;
+import static com.ktpm.quanlythuvien.UserMuonSachController.s;
+import static com.ktpm.quanlythuvien.UserMuonSachController.user;
 import com.ktpm.services.TheLoaiService;
-import com.ktpm.services.UserService;
-import com.ktpm.utils.MessageBox;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -34,7 +29,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -46,14 +40,10 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Admin
+ * @author THANH NHAN
  */
-public class UserMuonSachController implements Initializable {
+public class ChiTietLSController implements Initializable {
 
-    static UserService user = new UserService();
-    static SachService s = new SachService();
-    static PhieuMuonService pm = new PhieuMuonService();
-    static data d = new data();
     private User us;
 
     @FXML
@@ -74,7 +64,6 @@ public class UserMuonSachController implements Initializable {
     private ComboBox<TheLoaiSach> cbTheLoaiSach;
     @FXML
     private DatePicker ngayNhap;
-
     @FXML
     private TextField search;
 
@@ -133,7 +122,7 @@ public class UserMuonSachController implements Initializable {
     }
 
     private void loadTableData(String kw) throws SQLException {
-        List<Sach> sa = s.getSachs(kw);
+        List<Sach> sa = s.genSachOnPM(data2.getIdpm());
         this.tbSach.getItems().clear();
         this.tbSach.setItems(FXCollections.observableList(sa));
 
@@ -158,67 +147,15 @@ public class UserMuonSachController implements Initializable {
         this.ngayNhap.setValue(date1);
     }
 
-    public void themVaoPM(ActionEvent evt) throws SQLException {
-        long t = System.currentTimeMillis();
-        long t1 = us.getHanthe().getTime();
-        if (t1 - t >= 0) {
-            if (pm.kiemTraMuon(us.getId())) {
-                Sach sac = new Sach(Integer.parseInt(this.maSach.getText()),
-                        this.tenSach.getText(),
-                        this.tacGia.getText(),
-                        Date.valueOf(this.namXB.getValue()),
-                        this.moTa.getText(),
-                        this.viTri.getText(),
-                        Date.valueOf(this.ngayNhap.getValue()),
-                        this.cbTheLoaiSach.getSelectionModel().getSelectedItem().getMaTLS(),
-                        "Chưa đặt");
-                if (d.kts(sac)) {
-                    if (data.sa.size() < 5) {
-                        if (data.sa.add(sac)) {
-                            MessageBox.getBox("Thông báo", "Bạn đã thêm sách thành công!!!", Alert.AlertType.INFORMATION).show();
-                        } else {
-                            MessageBox.getBox("Thông báo", "không thành công!!!", Alert.AlertType.ERROR).show();
-                        }
-                    } else {
-                        MessageBox.getBox("Thông báo", "Sách mượn đã đạt tối đa", Alert.AlertType.ERROR).show();
-                    }
 
-                } else {
-                    MessageBox.getBox("Thông báo", "Sách này đã được thêm!!!", Alert.AlertType.ERROR).show();
-
-                }
-
-            } else {
-                MessageBox.getBox("Thông báo", "Bạn phải trả sách mới tiếp tục đặt!!!", Alert.AlertType.ERROR).show();
-            }
-
-        } else {
-            MessageBox.getBox("Thông báo", "Thẻ bạn đã hết hạn!!!", Alert.AlertType.INFORMATION).show();
-        }
-
-    }
-
-    public void chiTietPM(ActionEvent evt) throws IOException, SQLException {
+    public void thoat(ActionEvent evt) throws IOException, SQLException {
         Stage stage = (Stage) ((Node) evt.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("UserCTPM.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("LichSuMuon.fxml"));
         Parent manageView = loader.load();
         Scene scene = new Scene(manageView);
-        UserCtpmController controller = loader.getController();
+        UserLichSuController controller = loader.getController();
         controller.setUser(us);
         stage.setScene(scene);
         stage.show();
     }
-
-    public void thoat(ActionEvent evt) throws IOException, SQLException {
-        User ur = user.getU(this.us.getUsername(), this.us.getPassword());
-        Stage stage = (Stage) ((Node) evt.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("User.fxml"));
-        Parent manageView = loader.load();
-        Scene scene = new Scene(manageView);
-        UserController controller = loader.getController();
-        controller.thongTin(ur);
-        stage.setScene(scene);
-        stage.show();
-    }
-
 }

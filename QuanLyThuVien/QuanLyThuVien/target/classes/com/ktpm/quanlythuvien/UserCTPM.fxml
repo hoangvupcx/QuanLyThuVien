@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="588.0" prefWidth="1055.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ktpm.quanlythuvien.UserMuonSachController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="588.0" prefWidth="1055.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ktpm.quanlythuvien.UserCtpmController">
    <children>
-      <Label alignment="TOP_CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="38.0" prefWidth="1055.0" text="Mượn sách" textAlignment="CENTER">
+      <Label alignment="TOP_CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="38.0" prefWidth="1055.0" text="Thông tin phiếu mượn" textAlignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>
@@ -21,12 +21,6 @@
             <Insets bottom="25.0" />
          </VBox.margin>
       </Label>
-      <HBox alignment="CENTER" prefHeight="26.0" prefWidth="600.0" spacing="25.0">
-         <children>
-            <Label text="Nhập từ khóa" />
-            <TextField fx:id="search" alignment="TOP_LEFT" prefHeight="22.0" prefWidth="462.0" />
-         </children>
-      </HBox>
       <HBox prefHeight="29.0" prefWidth="1055.0" />
       <TableView fx:id="tbSach" onMouseClicked="#Load" prefHeight="302.0" prefWidth="1055.0">
          <opaqueInsets>
@@ -151,19 +145,19 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="53.0" prefWidth="510.0">
                      <children>
-                        <VBox alignment="CENTER" prefHeight="54.0" prefWidth="166.0">
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Button alignment="CENTER" mnemonicParsing="false" onAction="#chiTietPM" prefHeight="34.0" prefWidth="161.0" text="Chi tiết phiếu mượn" />
+                              <Button alignment="CENTER" mnemonicParsing="false" onAction="#delete" prefHeight="34.0" prefWidth="89.0" text="Xóa" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="65.0" prefWidth="119.0">
                            <children>
-                              <Button alignment="CENTER" mnemonicParsing="false" onAction="#themVaoPM" prefHeight="34.0" prefWidth="89.0" text="Thêm Sách" />
+                              <Button alignment="CENTER" mnemonicParsing="false" onAction="#datMuon" prefHeight="34.0" prefWidth="89.0" text="Đặt mượn" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="54.0" prefWidth="108.0">
                            <children>
-                              <Button alignment="CENTER" mnemonicParsing="false" onAction="#thoat" prefHeight="36.0" prefWidth="91.0" text="Thoát" />
+                              <Button alignment="CENTER" mnemonicParsing="false" onAction="#Thoat" prefHeight="36.0" prefWidth="91.0" text="Thoát" />
                            </children>
                         </VBox>
                      </children>

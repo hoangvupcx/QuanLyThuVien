@@ -5,7 +5,7 @@
 package com.ktpm.pojo;
 
 import java.util.Date;
-import javafx.scene.control.Button;
+
 
 /**
  *
@@ -21,9 +21,9 @@ public class Sach {
     private String viTri;
     private Date ngayNhapSach;
     private int sach_tl;
-    private Button button;
+    private String trangthai;
     
-    public Sach(String tenSach, String tenTacGia, Date namXB, String moTa, String viTri,Date ngayns ,int sach_tl)
+    public Sach(String tenSach, String tenTacGia, Date namXB, String moTa, String viTri,Date ngayns ,int sach_tl,String trangthai)
     {
         this.tenSach=tenSach;
         this.tenTacGia=tenTacGia;
@@ -32,9 +32,10 @@ public class Sach {
         this.viTri=viTri;
         this.ngayNhapSach=ngayns;
         this.sach_tl=sach_tl;
+        this.trangthai=trangthai;
     }
     
-    public Sach(int maSach,String tenSach, String tenTacGia, Date namXB, String moTa, String viTri,Date ngayns ,int sach_tl)
+    public Sach(int maSach,String tenSach, String tenTacGia, Date namXB, String moTa, String viTri,Date ngayns ,int sach_tl,String trangthai)
     {
         this.maSach=maSach;
         this.tenSach=tenSach;
@@ -44,7 +45,9 @@ public class Sach {
         this.viTri=viTri;
         this.ngayNhapSach=ngayns;
         this.sach_tl=sach_tl;
+        this.trangthai=trangthai;
     }
+    
 
     /**
      * @return the maSach
@@ -157,5 +160,21 @@ public class Sach {
     public void setSach_tl(int sach_tl) {
         this.sach_tl = sach_tl;
     }
+
+    /**
+     * @return the trangthai
+     */
+    public String getTrangthai() {
+        return trangthai;
+    }
+
+    /**
+     * @param trangthai the trangthai to set
+     */
+    public void setTrangthai(String trangthai) {
+        this.trangthai = trangthai;
+    }
+    
+
 
 }

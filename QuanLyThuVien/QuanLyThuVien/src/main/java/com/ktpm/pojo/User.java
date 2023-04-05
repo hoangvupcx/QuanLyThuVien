@@ -6,8 +6,6 @@ package com.ktpm.pojo;
 
 
 import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.sql.Date;
 
 /**

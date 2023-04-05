@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="486.0" prefWidth="600.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="486.0" prefWidth="600.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ktpm.quanlythuvien.UserController">
    <children>
       <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="638.0" text="User" textAlignment="CENTER">
          <font>
@@ -22,16 +22,16 @@
          <children>
             <HBox prefHeight="200.0" prefWidth="600.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="106.0" prefWidth="300.0">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="218.0">
                      <children>
                         <ImageView fitHeight="80.0" fitWidth="295.0" pickOnBounds="true" preserveRatio="true" />
-                        <Button mnemonicParsing="false" text="Mượn sách" />
+                        <Button mnemonicParsing="false" onAction="#userMuon" text="Mượn sách" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="106.0" prefWidth="300.0">
                      <children>
                         <ImageView fitHeight="80.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" />
-                        <Button mnemonicParsing="false" text="Trả sách" />
+                        <Button mnemonicParsing="false" onAction="#userTT" text="Thông tin cá nhân" />
                      </children>
                   </VBox>
                </children>
@@ -41,13 +41,13 @@
                   <VBox alignment="CENTER" prefHeight="106.0" prefWidth="300.0">
                      <children>
                         <ImageView fitHeight="80.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" />
-                        <Button mnemonicParsing="false" text="Lịch sử " />
+                        <Button mnemonicParsing="false" onAction="#userLs" text="Lịch sử " />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="106.0" prefWidth="300.0">
                      <children>
                         <ImageView fitHeight="80.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" />
-                        <Button mnemonicParsing="false" text="Thông tin cá nhân" />
+                        <Button mnemonicParsing="false" onAction="#dangXuat" text="Đăng xuất" />
                      </children>
                   </VBox>
                </children>
